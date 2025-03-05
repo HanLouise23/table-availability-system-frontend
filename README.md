@@ -28,7 +28,7 @@ Table Availability System created for TM470 - The computing and IT project
     </style>
 </head>
 <body>
-    <h1>Table availibilty system</h1>
+    <h1>Table availability system</h1>
     <p>booking system.</p>
 </body>
 </html>
