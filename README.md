@@ -9,6 +9,21 @@ Table Availability System created for TM470 - The computing and IT project
 - CSS
 - Javascript
 
+### Running the project
+
+In command line, navigate to the project directory:
+```bash
+cd <path>\table-availability-system-frontend\
+```
+Where `<path>` is the path to the project directory.
+
+Run as a web server with Python: 
+```
+python -m http.server 3000
+```
+
+You can access the page in your browser at `http://localhost:3000`.
+
 #### HTML Set-up
 
 <!DOCTYPE html>
