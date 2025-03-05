@@ -4,7 +4,7 @@ Table Availability System created for TM470 - The computing and IT project
 ## Getting started
 
 ### Prerequisites
-“*”
+
 -HTML
 -CSS
 -Javascript
