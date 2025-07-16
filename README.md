@@ -5,9 +5,13 @@ Table Availability System created for TM470 - The computing and IT project
 
 ### Prerequisites
 
-- HTML
-- CSS
-- Javascript
+- Node.js
+
+### Setup
+
+1. Install Node.js - Go to https://nodejs.org and download the LTS version.
+   1.1 Validate with `node -v` and `npm -v` in the command line.
+2. next step
 
 ### Running the project
 
