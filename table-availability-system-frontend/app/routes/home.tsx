@@ -1,13 +1,7 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+// app/routes/home.tsx
+import React from 'react';
+import SearchPage from '../screens/SearchPage';
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
+const HomeRoute: React.FC = () => <SearchPage />;
 
-export default function Home() {
-  return <Welcome />;
-}
+export default HomeRoute;
