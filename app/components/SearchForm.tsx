@@ -5,7 +5,6 @@ type Props = {
   tableCount: number;
   onLocationChange: (value: string) => void;
   onTableCountChange: (value: number) => void;
-  onSearch?: () => void;
 };
 
 const SearchForm: React.FC<Props> = ({
@@ -13,19 +12,9 @@ const SearchForm: React.FC<Props> = ({
   tableCount,
   onLocationChange,
   onTableCountChange,
-  onSearch,
 }) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch?.();
-  };
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}
-      role="search"
-    >
+    <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}>
       <input
         type="text"
         placeholder="Location"
@@ -41,8 +30,7 @@ const SearchForm: React.FC<Props> = ({
         min={1}
         aria-label="Minimum seats"
       />
-      <button type="submit">Search</button>
-    </form>
+    </div>
   );
 };
 
