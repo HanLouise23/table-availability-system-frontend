@@ -1,26 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Restaurant } from "~/types";
+import type { Restaurant } from "../models/Restaurant";
+
+const FALLBACK_IMG =
+  "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 export default function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
+  const imgSrc = restaurant.mainImageUrl?.trim() || FALLBACK_IMG;
+  const name = restaurant.name.trim();
+  const phone = restaurant.contact.phone?.trim() ?? "";
+  const tablesAvailable = restaurant.tables.length;
+
   return (
-    <div style={{ border: "1px solid #ccc", borderRadius: 4, margin: "0.5rem auto", padding: "1rem", maxWidth: 600, textAlign: "left" }}>
-      <Link to={`/restaurants/${restaurant.id}`}>
+    <article className="restaurant-card">
+      <Link to={`/restaurants/${restaurant.id}`} aria-label={`View details for ${name}`}>
         <img
-          src={restaurant.mainImageUrl}
-          alt={restaurant.name.trim()}
-          style={{ width: 150, height: 100, objectFit: "cover", borderRadius: 4 }}
+          className="restaurant-card__image"
+          src={imgSrc}
+          alt={`${name} main`}
+          loading="lazy"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
+          }}
         />
       </Link>
-      <div style={{ flex: 1 }}>
-        <h2>
-          <Link to={`/restaurants/${restaurant.id}`}>{restaurant.name.trim()}</Link>
+
+      <div className="restaurant-card__content">
+        <h2 className="restaurant-card__title">
+          <Link to={`/restaurants/${restaurant.id}`}>{name}</Link>
         </h2>
-        <p>{restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}</p>
-        <p>Contact: {restaurant.contact.phone.trim()} | {restaurant.contact.email}</p>
-        <p>Tables available: {restaurant.tables.length}</p>
-        <p>Rating: ⭐ {restaurant.rating.toFixed(1)}</p>
+
+        <p className="restaurant-card__address">
+          {restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}
+        </p>
+
+        <div className="restaurant-card__row">
+          <p className="restaurant-card__meta">
+            <span className="restaurant-card__rating">⭐ {restaurant.rating.toFixed(1)}</span>
+          </p>
+          <p className="restaurant-card__meta">Tables: {tablesAvailable}</p>
+        </div>
+
+        <p className="restaurant-card__contact">
+          Contact: {phone} {phone && " | "} {restaurant.contact.email}
+        </p>
       </div>
-    </div>
+    </article>
   );
 }

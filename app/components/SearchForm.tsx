@@ -14,7 +14,7 @@ const SearchForm: React.FC<Props> = ({
   onTableCountChange,
 }) => {
   return (
-    <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+    <div className="search-form">
       <input
         type="text"
         placeholder="Location"

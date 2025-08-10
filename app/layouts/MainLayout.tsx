@@ -1,3 +1,4 @@
+import "../styles/main.css";
 import React, { useState } from "react";
 import Header from "../components/Header";
 import SearchForm from "../components/SearchForm";
@@ -26,7 +27,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <Header />
       <SearchForm
         location={location}
