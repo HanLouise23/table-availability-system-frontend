@@ -1,23 +1,23 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import type { Restaurant } from "../models/Restaurant";
 import RestaurantDetails from "../screens/RestaurantDetails";
 
 export default function RestaurantDetailsPage() {
-  const { id } = useParams<{ id: string }>();
-  const [restaurant, setRestaurant] = useState(null);
+  const { id } = useParams();
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
   useEffect(() => {
-    if (id) {
-      fetch(`http://localhost:8000/restaurants/${id}`)
-        .then((res) => res.json())
-        .then((data) => setRestaurant(data))
-        .catch((err) => console.error("Error fetching restaurant:", err));
-    }
+    if (!id) return;
+    fetch(`http://localhost:8000/restaurants/${id}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(setRestaurant)
+      .catch(() => setRestaurant(null));
   }, [id]);
 
-  if (!restaurant) {
-    return <div>Loading...</div>;
-  }
-
+  if (!restaurant) return <div>Loading...</div>;
   return <RestaurantDetails restaurant={restaurant} />;
 }
