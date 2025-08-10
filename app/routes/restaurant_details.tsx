@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import RestaurantDetails from "../components/RestaurantDetails";
+import RestaurantDetails from "../screens/RestaurantDetails";
 
 export default function RestaurantDetailsPage() {
   const { id } = useParams<{ id: string }>();
