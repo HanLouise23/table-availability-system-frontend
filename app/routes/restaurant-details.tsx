@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import type { Restaurant } from "../models/Restaurant";
-import RestaurantDetails from "../screens/RestaurantDetails";
+import { useParams, useOutletContext } from "react-router-dom";
+import type { Restaurant, SearchContext } from "~/types";
+import RestaurantDetails from "../components/RestaurantDetails";
 
 export default function RestaurantDetailsPage() {
   const { id } = useParams();
+  const { location, tableCount } = useOutletContext<SearchContext>();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
   useEffect(() => {

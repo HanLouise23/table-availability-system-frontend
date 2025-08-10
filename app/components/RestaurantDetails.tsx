@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Restaurant } from '../models/Restaurant';
+import type { Restaurant } from "~/types";
 
 type Props = { restaurant: Restaurant };
 

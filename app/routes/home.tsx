@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
-import type { Restaurant } from "../models/Restaurant";
+import type { Restaurant, SearchContext } from "~/types";
 import RestaurantCard from "../components/RestaurantCard";
 
 type Ctx = { location: string; tableCount: number };
 
 export default function HomeRoute() {
-  const { location, tableCount } = useOutletContext<Ctx>();
+  const { location, tableCount } = useOutletContext<SearchContext>();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -62,7 +62,6 @@ export default function HomeRoute() {
 
   return (
     <>
-      {/* No loading text -> prevents flicker */}
       {showNoResults && <p>No matching restaurants found.</p>}
       {restaurants.map((r) => (
         <RestaurantCard key={r.id} restaurant={r} />

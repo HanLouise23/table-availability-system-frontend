@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Restaurant } from "../models/Restaurant";
+import type { Restaurant } from "~/types";
 
 export default function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
   return (

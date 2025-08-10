@@ -24,6 +24,14 @@ Where `<path>` is the path to the project directory.
 3. Run `npm run dev` to start the development server.
 4. Confirm your browser and if it’s loading http://localhost:5173
 
+## Structure
+
+- routes/ = route wrappers that load data and render a component
+- components/ = reusable/pure-ish UI pieces (RestaurantCard, RestaurantDetails, Header, SearchForm, etc.)
+- layouts/ = shared UI shells (MainLayout)
+- models/ = shared TS types
+- types/ = cross-cutting types (like the outlet context)
+
 ## Development Notes
 1. Project was created using `npm create vite@latest`
 2. React and React Router were selected as the framework.
