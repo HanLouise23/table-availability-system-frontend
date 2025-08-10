@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../components/Header';
 import type { Restaurant } from '../models/Restaurant';
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 const RestaurantDetails: React.FC<Props> = ({ restaurant }) => {
   return (
     <div>
+      <Header />
       <h1>{restaurant.name}</h1>
       <img src={restaurant.mainImageUrl} alt={restaurant.name} style={{ width: '300px' }} />
       <p>

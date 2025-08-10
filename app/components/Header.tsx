@@ -6,9 +6,7 @@ const Header: React.FC = () => (
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column'
-      }}>'
-        <h1 style={{ color: 'red', textAlign:
-    'center' }}></h1>
+      }}>
         <img src="../../img/header.png" />
   </header>
 );

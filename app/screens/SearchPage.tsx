@@ -1,4 +1,3 @@
-// app/screens/SearchPage.tsx
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import SearchForm from '../components/SearchForm';
