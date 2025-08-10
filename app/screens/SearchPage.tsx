@@ -3,27 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import SearchForm from '../components/SearchForm';
 import RestaurantCard from '../components/RestaurantCard';
-
-type Restaurant = {
-  id: number;
-  name: string;
-  address: {
-    line_1: string;
-    city: string;
-    postcode: string;
-  };
-  contact: {
-    phone: string;
-    email: string;
-  };
-  tables: {
-    table_id: number;
-    seats: number;
-    booked_by: string | null;
-    phone_number: string | null;
-  }[];
-};
-
+import type { Restaurant } from '../models/Restaurant';
 
 const SearchPage: React.FC = () => {
   const [location, setLocation] = useState('');

@@ -1,26 +1,6 @@
-// app/components/RestaurantCard.tsx
 import React from 'react';
-
-type Restaurant = {
-  id: number;
-  name: string;
-  address: {
-    line_1: string;
-    city: string;
-    postcode: string;
-  };
-  contact: {
-    phone: string;
-    email: string;
-  };
-  tables: {
-    table_id: number;
-    seats: number;
-    booked_by: string | null;
-    phone_number: string | null;
-  }[];
-};
-
+import { Link } from 'react-router-dom';
+import type { Restaurant } from '../models/Restaurant';
 
 const RestaurantCard: React.FC<{ restaurant: Restaurant }> = ({ restaurant }) => {
   return (
@@ -32,16 +12,34 @@ const RestaurantCard: React.FC<{ restaurant: Restaurant }> = ({ restaurant }) =>
       maxWidth: '600px',
       textAlign: 'left'
     }}>
-      <h2>{restaurant.name.trim()}</h2>
-      <p>
-        {restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}
-      </p>
-      <p>
-        Contact: {restaurant.contact.phone.trim()} | {restaurant.contact.email}
-      </p>
-      <p>
-        Tables available: {restaurant.tables.length}
-      </p>
+        <Link to={`/restaurants/${restaurant.id}`}>
+          <img
+            src={restaurant.mainImageUrl}
+            alt={restaurant.name.trim()}
+            style={{
+              width: '150px',
+              height: '100px',
+              objectFit: 'cover',
+              borderRadius: '4px'
+            }}/>
+        </Link>
+      <div style={{ flex: 1 }}>
+          <h2>
+            <Link to={`/restaurants/${restaurant.id}`}>
+              {restaurant.name.trim()}
+            </Link>
+          </h2>
+          <p>
+            {restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}
+          </p>
+          <p>
+            Contact: {restaurant.contact.phone.trim()} | {restaurant.contact.email}
+          </p>
+          <p>
+            Tables available: {restaurant.tables.length}
+          </p>
+          <p>Rating: ⭐ {restaurant.rating.toFixed(1)}</p>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// app/routes/home.tsx
 import React from 'react';
 import SearchPage from '../screens/SearchPage';
 
