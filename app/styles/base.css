@@ -1,0 +1,12 @@
+/* General page layout & utilities */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body { margin: 0; font-family: Arial, sans-serif; }
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}

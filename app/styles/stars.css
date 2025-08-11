@@ -1,0 +1,6 @@
+.stars { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 1rem; }
+.star { font-size: 1.1rem; line-height: 1; }
+.star--full { color: #f59e0b; }
+.star--half { color: #fbbf24; }
+.star--empty { color: #d1d5db; }
+.stars__value { color: #6b7280; font-size: 0.95rem; }

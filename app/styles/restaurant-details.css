@@ -1,0 +1,25 @@
+.restaurant-details { max-width: 960px; margin: 1rem auto; padding: 0 1rem; }
+
+.restaurant-details__header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; margin-bottom: 0.5rem;
+}
+.restaurant-details__title { margin: 0; font-size: 1.75rem; line-height: 1.2; }
+
+.restaurant-details__hero { text-align: center; margin: 0.5rem 0 1rem; }
+.restaurant-details__hero-img {
+  width: 100%; max-height: 420px; object-fit: cover; border-radius: 8px;
+}
+
+.panel { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+.panel__title { margin-top: 0; margin-bottom: 0.75rem; font-size: 1.25rem; }
+
+.details-list { list-style: none; padding: 0; margin: 0; }
+.details-list__item { display: flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0; }
+.details-list__icon { width: 1.25rem; display: inline-flex; justify-content: center; }
+
+.tables-list { list-style: none; padding: 0; margin: 0; }
+.tables-list__item { display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e7eb; padding: 0.5rem 0; }
+.tables-list__item:last-child { border-bottom: none; }
+.tables-list__seats { font-weight: 600; }
+.tables-list__availability { color: #374151; }

@@ -98,7 +98,7 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
           <img
             src={images[heroIndex]}
             alt={`${restaurant.name.trim()} photo ${heroIndex + 1}`}
-            className="restaurant-details__hero"
+            className="restaurant-details__hero-img"
           />
         )}
 
@@ -114,7 +114,7 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
                   onClick={() => setHero(idx)}
                   aria-label={`Show image ${idx + 1}`}
                 >
-                  <img src={src} alt={`Thumbnail ${idx + 1}`} />
+                  <img className="carousel__thumb-img" src={src} alt={`Thumbnail ${idx + 1}`} />
                 </button>
               ))}
             </div>

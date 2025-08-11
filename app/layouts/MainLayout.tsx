@@ -35,7 +35,7 @@ export default function MainLayout() {
         onLocationChange={handleLocationChange}
         onTableCountChange={handleTableCountChange}
       />
-      <main style={{ padding: "1rem" }}>
+      <main>
         {/* Share params to routes */}
         <Outlet context={{ location, tableCount }} />
       </main>

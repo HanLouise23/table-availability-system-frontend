@@ -1,0 +1,37 @@
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto 1rem;
+  padding: 0 0.5rem;
+}
+
+.search-form__location { flex: 1 1 320px; min-width: 180px; }
+
+.search-form__seats {
+  display: flex; align-items: center; gap: 0.4rem; flex: 0 0 auto;
+}
+
+.search-form input {
+  padding: 0.6rem 0.7rem;
+  font-size: 1rem;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.search-form__seats input[type="number"] { width: 6ch; text-align: center; }
+
+@media (max-width: 600px) {
+  .search-form { flex-direction: column; align-items: stretch; }
+  .search-form input { width: 100%; flex: none; height: auto; }
+}
+
+@media (max-width: 480px) {
+  .search-form { gap: 0.4rem; }
+  .search-form__location { flex-basis: 100%; }
+  .search-form__seats { justify-content: center; width: 100%; }
+  .search-form__seats input[type="number"] { width: 5ch; }
+}

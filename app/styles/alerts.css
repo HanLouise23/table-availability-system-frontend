@@ -1,0 +1,5 @@
+.alert {
+  margin: 0.75rem auto; padding: 0.75rem 1rem; border-radius: 6px;
+  max-width: 900px; text-align: center;
+}
+.alert--success { background: #e8f6ec; color: #176b3a; border: 1px solid #bfe6cd; }
