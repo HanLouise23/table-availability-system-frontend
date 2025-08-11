@@ -1,25 +1,255 @@
-import React from 'react';
+// app/components/RestaurantDetails.tsx
+import React, { useMemo, useState } from "react";
 import type { Restaurant } from "~/types";
 
-type Props = { restaurant: Restaurant };
+type Props = {
+  restaurant: Restaurant;
+  desiredSeats?: number;                // from route (tableCount)
+  onBooked?: (msg: string) => void;     // route shows success banner + refetch
+};
 
-const RestaurantDetails: React.FC<Props> = ({ restaurant }) => {
+const API_BASE = "http://localhost:8000";
+
+const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked }) => {
+  // ----- Carousel state -----
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  const images: string[] = useMemo(() => {
+    const rest = (restaurant.imageUrls ?? []).filter(Boolean);
+    return [restaurant.mainImageUrl, ...rest].filter(Boolean);
+  }, [restaurant.mainImageUrl, restaurant.imageUrls]);
+
+  const prev = () => setHeroIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setHeroIndex((i) => (i + 1) % images.length);
+  const setHero = (idx: number) => setHeroIndex(idx);
+
+  // ----- Availability summary -----
+  const availableTables = restaurant.tables.filter(t => !t.booked_by);
+  const tablesAvailable = availableTables.length;
+  const seatsAvailable = availableTables.reduce((acc, t) => acc + t.seats, 0);
+
+  // ----- Booking form state -----
+  const [showForm, setShowForm] = useState(false);
+  const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  // Recommend a table (smallest that meets/exceeds desired seats)
+  const recommendedTable = useMemo(() => {
+    if (!desiredSeats) return null;
+    const sorted = [...availableTables].sort((a, b) => a.seats - b.seats);
+    return sorted.find(t => t.seats >= desiredSeats) ?? sorted[0] ?? null;
+  }, [availableTables, desiredSeats]);
+
+  const openForm = () => {
+    setShowForm(true);
+    if (recommendedTable) setSelectedTableId(recommendedTable.table_id);
+  };
+
+  // ----- Booking submission -----
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setFormError(null);
+    if (!selectedTableId) {
+      setFormError("Please select a table.");
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await fetch(
+        `${API_BASE}/restaurants/${restaurant.id}/tables/${selectedTableId}/book`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, phone_number: phone }),
+        }
+      );
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(txt || `HTTP ${res.status}`);
+      }
+      onBooked?.(`Table ${selectedTableId} booked successfully.`);
+      setShowForm(false);
+      setName("");
+      setPhone("");
+      setSelectedTableId(null);
+    } catch (err: any) {
+      setFormError("Booking failed. Please try again.");
+      // console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  // ----- Rating stars (full/half/empty) -----
+  const renderStars = (rating: number) => {
+    const full = Math.floor(rating);
+    const decimal = rating - full;
+    const hasHalf = decimal >= 0.25 && decimal < 0.75;
+    const total = 5;
+
+    const stars = [];
+    for (let i = 0; i < full && i < total; i++) {
+      stars.push(<span key={`f${i}`} className="star star--full">★</span>);
+    }
+    if (hasHalf && stars.length < total) {
+      stars.push(<span key="h" className="star star--half">★</span>);
+    }
+    while (stars.length < total) {
+      stars.push(<span key={`e${stars.length}`} className="star star--empty">★</span>);
+    }
+    return (
+      <span className="stars" aria-label={`Rating ${rating.toFixed(1)} out of 5`}>
+        {stars}
+        <span className="stars__value">{rating.toFixed(1)}</span>
+      </span>
+    );
+  };
+
   return (
     <div className="restaurant-details">
-      <h1>{restaurant.name}</h1>
-      <img src={restaurant.mainImageUrl} alt={restaurant.name}/>
-      <p>{restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}</p>
-      <p>Phone: {restaurant.contact.phone}</p>
-      <p>Email: {restaurant.contact.email}</p>
+      {/* Title + rating */}
+      <div className="card">
+        <div className="card__header">
+          <h1 className="restaurant-details__title card__title">{restaurant.name.trim()}</h1>
+          {renderStars(restaurant.rating)}
+        </div>
 
-      <h2>Tables</h2>
-      <ul>
-        {restaurant.tables.map((t) => (
-          <li key={t.table_id}>
-            Seats: {t.seats} — {t.booked_by ? `Booked by ${t.booked_by}` : 'Available'}
+        {/* Hero image */}
+        {images.length > 0 && (
+          <img
+            src={images[heroIndex]}
+            alt={`${restaurant.name.trim()} photo ${heroIndex + 1}`}
+            className="restaurant-details__hero"
+          />
+        )}
+
+        {/* Carousel thumbs */}
+        {images.length > 1 && (
+          <div className="carousel" aria-label="Restaurant gallery">
+            <button className="carousel__btn" onClick={prev} aria-label="Previous image">‹</button>
+            <div className="carousel__thumbs">
+              {images.map((src, idx) => (
+                <button
+                  key={src + idx}
+                  className={`carousel__thumb ${idx === heroIndex ? "is-active" : ""}`}
+                  onClick={() => setHero(idx)}
+                  aria-label={`Show image ${idx + 1}`}
+                >
+                  <img src={src} alt={`Thumbnail ${idx + 1}`} />
+                </button>
+              ))}
+            </div>
+            <button className="carousel__btn" onClick={next} aria-label="Next image">›</button>
+          </div>
+        )}
+      </div>
+
+      {/* Info card */}
+      <div className="card">
+        <div className="card__header">
+          <h2 className="card__title">Restaurant information</h2>
+        </div>
+        <ul className="info-list">
+          <li className="info-list__item">
+            <span className="info-list__icon" aria-hidden>📍</span>
+            <span>{restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}</span>
           </li>
-        ))}
-      </ul>
+          <li className="info-list__item">
+            <span className="info-list__icon" aria-hidden>📞</span>
+            <span>{restaurant.contact.phone}</span>
+          </li>
+          <li className="info-list__item">
+            <span className="info-list__icon" aria-hidden>✉️</span>
+            <span>{restaurant.contact.email}</span>
+          </li>
+        </ul>
+
+        <p className="restaurant-details__availability" style={{ marginTop: "0.75rem" }}>
+          <strong>{tablesAvailable}</strong> table{tablesAvailable !== 1 ? "s" : ""} available,&nbsp;
+          <strong>{seatsAvailable}</strong> seat{seatsAvailable !== 1 ? "s" : ""} total.
+        </p>
+
+        {!showForm && (
+          <button className="btn btn--primary" onClick={openForm}>
+            Book a table
+          </button>
+        )}
+      </div>
+
+      {/* Booking form */}
+      {showForm && (
+        <div className="card">
+          <div className="card__header">
+            <h3 className="card__title">Book a table</h3>
+          </div>
+
+          {desiredSeats && recommendedTable && (
+            <p className="restaurant-details__availability">
+              Based on your search we recommend <strong>table {recommendedTable.table_id}</strong>
+              {` (seats ${recommendedTable.seats})`}.
+            </p>
+          )}
+
+          <form className="booking-form" onSubmit={handleSubmit}>
+            <div className="booking-form__field">
+              <label htmlFor="table">Table</label>
+              <select
+                id="table"
+                value={selectedTableId ?? ""}
+                onChange={(e) => setSelectedTableId(Number(e.target.value))}
+                required
+              >
+                <option value="" disabled>Select a table</option>
+                {availableTables.map((t) => (
+                  <option key={t.table_id} value={t.table_id}>
+                    Table {t.table_id} — {t.seats} seats
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="booking-form__field">
+              <label htmlFor="name">Your name</label>
+              <input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="booking-form__field">
+              <label htmlFor="phone">Phone number</label>
+              <input
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+
+            {formError && <p className="form-error">{formError}</p>}
+
+            <div className="booking-form__actions">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => setShowForm(false)}
+                disabled={submitting}
+              >
+                Cancel
+              </button>
+              <button type="submit" className="btn btn--primary" disabled={submitting}>
+                {submitting ? "Booking…" : "Book"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

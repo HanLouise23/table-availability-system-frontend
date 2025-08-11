@@ -36,7 +36,14 @@ export default function RestaurantCard({ restaurant }: { restaurant: Restaurant 
 
         <div className="restaurant-card__row">
           <p className="restaurant-card__meta">
-            <span className="restaurant-card__rating">⭐ {restaurant.rating.toFixed(1)}</span>
+            <span className="restaurant-card__rating">
+              {Array.from({ length: Math.round(restaurant.rating) }, (_, i) => (
+                <span key={i}>⭐</span>
+              ))}
+              <span className="restaurant-card__rating-value">
+                {restaurant.rating.toFixed(1)}
+              </span>
+            </span>
           </p>
           <p className="restaurant-card__meta">Tables: {tablesAvailable}</p>
         </div>
