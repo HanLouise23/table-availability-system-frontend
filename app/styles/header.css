@@ -1,7 +1,20 @@
-.header {
+.header-images {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between; /* push left, center, right apart */
   align-items: center;
-  margin-bottom: 1rem;
+  width: 20%;
 }
-.header img { max-width: 400px; height: auto; }
+
+.header-images img {
+  max-width: 100px;
+  height: auto;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 600px) {
+  .header-images {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
