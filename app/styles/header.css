@@ -3,6 +3,8 @@
   width: 100%;              /* Full width across page */
   height: 200px;            /* Banner height */
   background-color: #000;   /* Optional background */
+  border-radius: 6px;       /* round the whole banner */
+  overflow: hidden;         /* hides black corners */
 }
 
 .banner-img {
