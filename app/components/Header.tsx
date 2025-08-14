@@ -1,15 +1,12 @@
 import React from 'react';
 import leftImg from '/img/left.png';
-import headerImg from '/img/header.png';
 import rightImg from '/img/right.png';
 
 const Header: React.FC = () => (
-  <header className="header">
-    <div className="header-images">
-      <img src={leftImg} alt="Left decoration" />
-      <img src={headerImg} alt="Restaurant Finder" />
-      <img src={rightImg} alt="Right decoration" />
-    </div>
+  <header className="header-banner">
+    <img src={leftImg} alt="Left decoration" className="banner-img" />
+    <div className="banner-text">Table Availability System</div>
+    <img src={rightImg} alt="Right decoration" className="banner-img" />
   </header>
 );
 

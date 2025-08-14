@@ -1,20 +1,36 @@
-.header-images {
+.header-banner {
   display: flex;
-  justify-content: space-between; /* push left, center, right apart */
+  width: 100%;              /* Full width across page */
+  height: 200px;            /* Banner height */
+  background-color: #000;   /* Optional background */
+}
+
+.banner-img {
+  flex: 1;                   /* Equal width with text */
+  height: 100%;
+  object-fit: cover;         /* Fill without distortion */
+}
+
+.banner-text {
+  flex: 1;
+  display: flex;
   align-items: center;
-  width: 20%;
+  justify-content: center;
+  background-color: #5a2dff; /* Your background color */
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-.header-images img {
-  max-width: 100px;
-  height: auto;
+/* White separators */
+.banner-img:first-child {
+  border-right: 2px solid white;
 }
-
-/* Mobile: stack vertically */
-@media (max-width: 600px) {
-  .header-images {
-    flex-direction: column;
-    gap: 10px;
-  }
+.banner-text {
+  border-left: 2px solid white;
+  border-right: 2px solid white;
 }
-
+.banner-img:last-child {
+  border-left: 2px solid white;
+}
