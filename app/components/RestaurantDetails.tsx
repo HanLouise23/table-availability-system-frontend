@@ -1,14 +1,13 @@
 import React, { useMemo, useState } from "react";
 import type { Restaurant } from "~/types";
 import RatingStars from "./RatingStars";
+import { bookTable } from "../services/restaurants";
 
 type Props = {
   restaurant: Restaurant;
   desiredSeats?: number;                // from route (tableCount)
   onBooked?: (msg: string) => void;     // route shows success banner + refetch
 };
-
-const API_BASE = "http://localhost:8000";
 
 const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked }) => {
   // ----- Carousel state -----
@@ -59,26 +58,24 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
     }
     try {
       setSubmitting(true);
-      const res = await fetch(
-        `${API_BASE}/restaurants/${restaurant.id}/tables/${selectedTableId}/book`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, phone_number: phone }),
-        }
+      controllerRef.current?.abort();
+      const c = new AbortController();
+      controllerRef.current = c;
+
+      await bookTable(
+        restaurant.id,
+        selectedTableId,
+        { name, phone_number: phone },
+        c.signal
       );
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        throw new Error(txt || `HTTP ${res.status}`);
-      }
+
       onBooked?.(`Table ${selectedTableId} booked successfully.`);
       setShowForm(false);
       setName("");
       setPhone("");
       setSelectedTableId(null);
-    } catch (err: any) {
+    } catch (err) {
       setFormError("Booking failed. Please try again.");
-      // console.error(err);
     } finally {
       setSubmitting(false);
     }

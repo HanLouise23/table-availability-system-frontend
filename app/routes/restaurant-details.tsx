@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import type { Restaurant, SearchContext } from "~/types";
 import RestaurantDetails from "../components/RestaurantDetails";
+import { getRestaurant } from "../services/restaurants";
 
 const API_BASE = "http://localhost:8000";
 
@@ -21,11 +22,7 @@ export default function RestaurantDetailsRoute() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/restaurants/${id}`, {
-        signal: controller.signal,
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = (await res.json()) as Restaurant;
+      const data = await getRestaurant(id, controller.signal);
       setRestaurant(data);
     } catch (e: any) {
       if (e?.name !== "AbortError") {
@@ -40,7 +37,6 @@ export default function RestaurantDetailsRoute() {
   useEffect(() => {
     fetchRestaurant();
     return () => abortRef.current?.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleBooked = (msg: string) => {
@@ -61,7 +57,7 @@ export default function RestaurantDetailsRoute() {
       )}
       <RestaurantDetails
         restaurant={restaurant}
-        desiredSeats={tableCount}      // <-- pass desired seats
+        desiredSeats={tableCount}
         onBooked={handleBooked}
       />
     </div>

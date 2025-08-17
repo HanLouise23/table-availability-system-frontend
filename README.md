@@ -20,9 +20,14 @@ cd <path>\table-availability-system-frontend\
 ```
 Where `<path>` is the path to the project directory.
 
-2. Run `npm install` to install the required packages.
-3. Run `npm run dev` to start the development server.
-4. Confirm your browser and if it’s loading http://localhost:5173
+2. Add a `.env.development` file in the root of the project with the following content:
+```
+VITE_API_BASE=http://localhost:8000
+```
+
+3. Run `npm install` to install the required packages.
+4. Run `npm run dev` to start the development server.
+5. Confirm your browser and if it’s loading http://localhost:5173
 
 ## Structure
 
