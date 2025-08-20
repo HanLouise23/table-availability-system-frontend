@@ -33,7 +33,6 @@ export default function HomeRoute() {
 
     const params = new URLSearchParams({
       location: trimmed,
-      has_tables: "true",
       min_seats: tableCount.toString(),
     });
 
