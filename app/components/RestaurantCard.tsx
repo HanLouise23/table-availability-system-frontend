@@ -8,21 +8,28 @@ type Props = { restaurant: Restaurant };
 const RestaurantCard: React.FC<Props> = ({ restaurant }) => {
   const tablesAvailable = restaurant.tables.filter(t => !t.booked_by).length;
 
+  const detailsUrl = `/restaurants/${restaurant.id}`;
+
   return (
     <div className="restaurant-card">
-      <Link to={`/restaurants/${restaurant.id}`}>
-          <img
-            className="restaurant-card__image"
-            src={restaurant.mainImageUrl}
-            alt={restaurant.name}
-          />
+      {/* Image links to details */}
+      <Link to={detailsUrl}>
+        <img
+          className="restaurant-card__image"
+          src={restaurant.mainImageUrl}
+          alt={restaurant.name}
+        />
       </Link>
+
+      {/* Content column */}
       <div className="restaurant-card__content">
         <h2 className="restaurant-card__title">
-          <Link to={`/restaurants/${restaurant.id}`}>{restaurant.name}</Link>
+          <Link to={detailsUrl}>{restaurant.name}</Link>
         </h2>
+
         <p className="restaurant-card__address">
-          {restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}
+          {restaurant.address.line_1}, {restaurant.address.city},{" "}
+          {restaurant.address.postcode}
         </p>
 
         <div className="restaurant-card__row">
