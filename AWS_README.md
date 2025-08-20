@@ -25,20 +25,35 @@ This version of the application is what we will deploy to AWS.
    - Secret Access Key - This was generated when I created the access key in AWS IAM and stored in local records.
    - region - I used `eu-west-2` (London) as it is the closest region to me, matching the backend.
    - output format - I used `json` as it is the default and works well with the CLI.
-### S3 Bucket Creation
-The S3 bucket is used to host the static files of the frontend application. The bucket name must be globally unique across all AWS accounts -- I selected `tas-frontend-dev` as my bucket name.
-```bash
-aws s3api create-bucket --bucket tas-frontend-dev --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
-```
-Block all public access to the bucket to ensure security. This is important as we do not want anyone to be able to access the files in the bucket unless we explicitly allow it. CloudFront will be the only one allowed to read.
-```bash
-aws s3api put-public-access-block --bucket tas-frontend-dev --public-access-block-configuration 'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
-```
+
 ### Create CloudFront with Origin Access Control (OAC)
 Ensure IAM Policy for "CloudFrontFullAccess" is attached to the user or role that will be creating the CloudFront distribution via:
 
 IAM > Users > MyUsername > Permissions > Add permissions > Attach policies directly > Search and attach it.:
 ![IAM](img/aws_iam.png)
+
+### Create S3 Bucket
+1. Go to S3 → Buckets → Create bucket
+   - Name: tas-frontend-dev
+   - Region: eu-west-2 (London)
+   - Keep Block all public access = ON (use CloudFront, not public S3)
+2. Click Create bucket
+3. Upload the frontend build
+4. Open the bucket → Upload
+5. Add all files from `dist/` folder
+6. Click Upload
+
+### Create CloudFront Distribution
+1. Go to CloudFront → Create distribution
+   - Origin type: Amazon S3
+   - Select bucket (tas-frontend-dev)
+   - Enable: Restrict bucket access → CloudFront will create permissions
+   - Default root object: `index.html`
+   - Viewer protocol policy: Redirect HTTP to HTTPS
+   - Caching: leave defaults (good for static assets)
+2. Create the distribution
+3. Wait for the distribution to deploy (status will change from "In Progress" to "Deployed")
+4. Domain will be generated like: https://d2wje48k2823pv.cloudfront.net
 
 ### Deploy manually to S3
 ```bash
