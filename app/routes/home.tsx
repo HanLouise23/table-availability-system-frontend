@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { Restaurant, SearchContext } from "~/types";
 import RestaurantCard from "../components/RestaurantCard";
+import { searchRestaurants } from "../services/restaurants";
 
 type Ctx = { location: string; tableCount: number };
 
@@ -36,23 +37,14 @@ export default function HomeRoute() {
       min_seats: tableCount.toString(),
     });
 
-    fetch(`http://localhost:8000/restaurants?${params}`, { signal: controller.signal })
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((data: Restaurant[]) => {
-        setRestaurants(data);
-      })
+    searchRestaurants(params, controller.signal)
+      .then((data) => setRestaurants(data))
       .catch((err) => {
         if ((err as any).name !== "AbortError") {
           console.error("Fetch error:", err);
-          // Keep old results on error
         }
       })
-      .finally(() => {
-        setIsFetching(false);
-      });
+      .finally(() => setIsFetching(false));
 
     return () => controller.abort();
   }, [location, tableCount]);
