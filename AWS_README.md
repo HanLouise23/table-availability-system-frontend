@@ -35,3 +35,31 @@ Block all public access to the bucket to ensure security. This is important as w
 aws s3api put-public-access-block --bucket tas-frontend-dev --public-access-block-configuration 'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
 ```
 ### Create CloudFront with Origin Access Control (OAC)
+Ensure IAM Policy for "CloudFrontFullAccess" is attached to the user or role that will be creating the CloudFront distribution via:
+
+IAM > Users > MyUsername > Permissions > Add permissions > Attach policies directly > Search and attach it.:
+![IAM](img/aws_iam.png)
+
+### Deploy manually to S3
+```bash
+npm run build
+aws s3 sync dist/ s3://tas-frontend-dev/ --delete
+aws cloudfront create-invalidation --distribution-id ${DIST_ID} --paths "/*"
+```
+
+`build` regenerates the dist/ folder with your latest changes.
+`--delete` ensures old assets that no longer exist are removed.
+`create-invalidation` is used to clear the CloudFront cache so that the latest files are served.
+
+Changes will then be live.
+
+### Additional Commands
+#### To ensure logged in 
+`aws sts get-caller-identity`
+
+#### List distributions
+`aws cloudfront list-distributions --query "DistributionList.Items[].{Id:Id, Domain:DomainName}" --output table`
+
+#### Get CloudFront domain
+`aws cloudfront get-distribution --id $DIST_ID --query "Distribution.DomainName" --output text` - 
+assumes `$DIST_ID` is set to the ID of the distribution you want to query. If not, use list distributions command to retrieve this value.
