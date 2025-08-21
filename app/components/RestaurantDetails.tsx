@@ -13,6 +13,7 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
   // ----- Carousel state -----
   const [heroIndex, setHeroIndex] = useState(0);
 
+
   const images: string[] = useMemo(() => {
     const rest = (restaurant.imageUrls ?? []).filter(Boolean);
     return [restaurant.mainImageUrl, ...rest].filter(Boolean);
@@ -81,14 +82,14 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
     }
   }
 
-  return (
-    <div className="restaurant-details">
-      {/* Title + rating */}
-      <div className="card">
-        <div className="card__header">
-          <h1 className="restaurant-details__title card__title">{restaurant.name.trim()}</h1>
-          <RatingStars rating={restaurant.rating} />
-        </div>
+return (
+  <div className="restaurant-details">
+    {/* Title + rating */}
+    <div className="card">
+      <div className="card__header">
+        <h1 className="restaurant-details__title card__title">{restaurant.name.trim()}</h1>
+        <RatingStars rating={restaurant.rating} />
+      </div>
 
         {/* Hero image */}
         {images.length > 0 && (
@@ -99,10 +100,18 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
           />
         )}
 
-        {/* Carousel thumbs */}
+        {/* Carousel */}
         {images.length > 1 && (
           <div className="carousel" aria-label="Restaurant gallery">
-            <button className="carousel__btn" onClick={prev} aria-label="Previous image">‹</button>
+            <button
+              className="carousel__btn"
+              onClick={prev}
+              aria-label="Previous image"
+              tabIndex={-1}
+            >
+              ‹
+            </button>
+
             <div className="carousel__thumbs">
               {images.map((src, idx) => (
                 <button
@@ -110,12 +119,25 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
                   className={`carousel__thumb ${idx === heroIndex ? "is-active" : ""}`}
                   onClick={() => setHero(idx)}
                   aria-label={`Show image ${idx + 1}`}
+                  tabIndex={-1} // if you also want to skip thumbs
                 >
-                  <img className="carousel__thumb-img" src={src} alt={`Thumbnail ${idx + 1}`} />
+                  <img
+                    className="carousel__thumb-img"
+                    src={src}
+                    alt={`Thumbnail ${idx + 1}`}
+                  />
                 </button>
               ))}
             </div>
-            <button className="carousel__btn" onClick={next} aria-label="Next image">›</button>
+
+            <button
+              className="carousel__btn"
+              onClick={next}
+              aria-label="Next image"
+              tabIndex={-1}
+            >
+              ›
+            </button>
           </div>
         )}
       </div>
