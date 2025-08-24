@@ -52,14 +52,15 @@ const SearchForm: React.FC<Props> = ({
 
   return (
     <div className="search-form">
-      <input
-        className="search-form__location"
-        type="text"
-        placeholder="Location"
-        value={location}
-        onChange={(e) => onLocationChange(e.target.value)}
-        aria-label="Location"
-      />
+       <label htmlFor="location" className="sr-only">Location</label>
+       <input
+         id="location"
+         className="search-form__location"
+         type="text"
+         placeholder="Location"
+         value={location}
+         onChange={(e) => onLocationChange(e.target.value)}
+       />
 
       <div className="search-form__seats">
           <button

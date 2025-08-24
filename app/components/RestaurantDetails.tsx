@@ -14,6 +14,8 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
   const [heroIndex, setHeroIndex] = useState(0);
 
   const controllerRef = useRef<AbortController | null>(null);
+  const toDigits = (s: string) => s.replace(/\D+/g, "");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const images: string[] = useMemo(() => {
     const rest = (restaurant.imageUrls ?? []).filter(Boolean);
     return [restaurant.mainImageUrl, ...rest].filter(Boolean);
@@ -45,6 +47,10 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
     setShowForm(true);
     if (recommendedTable) setSelectedTableId(recommendedTable.table_id);
   };
+  const tableSelectRef = React.useRef<HTMLSelectElement | null>(null);
+  React.useEffect(() => {
+      if (showForm) tableSelectRef.current?.focus();
+  }, [showForm]);
 
   // ----- Booking submission -----
   const [submitting, setSubmitting] = useState(false);
@@ -57,6 +63,16 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
       setFormError("Please select a table.");
       return;
     }
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setFormError("Please enter your name.");
+      return;
+    }
+    const digits = toDigits(phone);
+    if (digits.length !== 11) {
+      setPhoneError("Please enter an 11-digit UK mobile number, for example 07123 456 789.");
+      return;
+    }
     try {
       setSubmitting(true);
       controllerRef.current?.abort();
@@ -66,7 +82,7 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
       await bookTable(
         restaurant.id,
         selectedTableId,
-        { name, phone_number: phone },
+        { name: trimmedName, phone_number: digits },
         c.signal
       );
 
@@ -105,9 +121,9 @@ return (
           <div className="carousel" aria-label="Restaurant gallery">
             <button
               className="carousel__btn"
+              type="button"
               onClick={prev}
               aria-label="Previous slide"
-              tabIndex={-1}
             >
               ‹
             </button>
@@ -119,22 +135,17 @@ return (
                   className={`carousel__thumb ${idx === heroIndex ? "is-active" : ""}`}
                   onClick={() => setHero(idx)}
                   aria-label={`Show slide ${idx + 1}`}
-                  tabIndex={-1} // if you also want to skip thumbs
                 >
-                  <img
-                    className="carousel__thumb-img"
-                    src={src}
-                    alt={`Thumbnail ${idx + 1}`}
-                  />
+                  <img className="carousel__thumb-img" src={src} alt="" aria-hidden />
                 </button>
               ))}
             </div>
 
             <button
               className="carousel__btn"
+              type="button"
               onClick={next}
               aria-label="Next slide"
-              tabIndex={-1}
             >
               ›
             </button>
@@ -193,6 +204,7 @@ return (
               <label htmlFor="table">Table</label>
               <select
                 id="table"
+                ref={tableSelectRef}
                 value={selectedTableId ?? ""}
                 onChange={(e) => setSelectedTableId(Number(e.target.value))}
                 required
@@ -211,6 +223,7 @@ return (
               <input
                 id="name"
                 value={name}
+                maxLength={200}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
@@ -218,15 +231,29 @@ return (
 
             <div className="booking-form__field">
               <label htmlFor="phone">Phone number</label>
-              <input
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
+               <p id="phone-hint" className="form-hint">
+                 Enter 11 digits, for example 07123 456 789.
+               </p>
+               <input
+                 id="phone"
+                 type="tel"
+                 inputMode="tel"
+                 aria-describedby="phone-hint"
+                 aria-invalid={!!phoneError}
+                 value={phone}
+                 onChange={(e) => {
+                   const digits = toDigits(e.target.value).slice(0, 11);
+                   setPhone(digits);
+                   setPhoneError(digits.length > 0 && digits.length < 11
+                     ? "Please enter an 11-digit UK mobile number, for example 07123 456 789."
+                     : null
+                   );
+                 }}
+                 required
+               />
+               {phoneError && <p className="form-error" role="alert">{phoneError}</p>}
+               {formError && <p className="form-error" role="alert">{formError}</p>}
             </div>
-
-            {formError && <p className="form-error" role="alert">{formError}</p>}
 
             <div className="booking-form__actions">
               <button

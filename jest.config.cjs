@@ -1,6 +1,8 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
+  clearMocks: true,
+  restoreMocks: true,
 
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",

@@ -28,6 +28,7 @@ export default function MainLayout() {
 
   return (
     <div className="page-container">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <Header />
       <SearchForm
         location={location}
@@ -35,7 +36,7 @@ export default function MainLayout() {
         onLocationChange={handleLocationChange}
         onTableCountChange={handleTableCountChange}
       />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {/* Share params to routes */}
         <Outlet context={{ location, tableCount }} />
       </main>

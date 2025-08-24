@@ -4,9 +4,9 @@ import rightImg from '/img/right.png';
 
 const Header: React.FC = () => (
   <header className="header-banner">
-    <img src={leftImg} alt="Left decoration" className="banner-img" />
+    <img src={leftImg} alt="" aria-hidden="true" className="banner-img" />
     <div className="banner-text">Table Availability System</div>
-    <img src={rightImg} alt="Right decoration" className="banner-img" />
+    <img src={rightImg} alt="" aria-hidden="true" className="banner-img" />
   </header>
 );
 
