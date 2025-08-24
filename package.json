@@ -7,7 +7,9 @@
     "build": "vite build",
     "preview": "vite preview --port 5173",
     "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:cov": "jest --coverage",
+    "coverage:open": "open-cli ./coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@react-router/node": "^7.5.3",
@@ -32,6 +34,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
+    "open-cli": "^8.0.0",
     "tailwindcss": "^4.1.4",
     "ts-jest": "^29.4.1",
     "typescript": "^5.8.3",

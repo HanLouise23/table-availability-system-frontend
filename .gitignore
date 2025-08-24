@@ -68,5 +68,7 @@ Thumbs.db
 !.gitignore
 !.nvmrc
 !.phpcs.xml.dist
+
 table-availability-system-frontend/build/client/**
 table-availability-system-frontend/build/server/**
+/coverage/

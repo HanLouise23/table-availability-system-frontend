@@ -47,6 +47,22 @@ This project uses the following testing libraries:
 - `jest-environment-jsdom` → simulates a browser-like DOM environment for React components
 - `identity-obj-proxy` → shim to mock CSS/SCSS modules so Jest doesn’t crash on imports
 
+To run the tests, run:
+
+```bash
+npm test
+```
+
+### Code Coverage
+To generate a code coverage report in the console, run:
+```bash
+npm run test:cov
+```
+For HTML report, run:
+```bash
+npm run coverage:open
+```
+
 ### Config
 - `jest.config.cjs` → Jest configuration file (Note: this is a CommonJS file, unlike the project, which is ESM)
 - `jest.setup.js` → setup file that runs before tests
