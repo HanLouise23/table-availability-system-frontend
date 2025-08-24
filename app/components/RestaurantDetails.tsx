@@ -106,7 +106,7 @@ return (
             <button
               className="carousel__btn"
               onClick={prev}
-              aria-label="Previous image"
+              aria-label="Previous slide"
               tabIndex={-1}
             >
               ‹
@@ -118,7 +118,7 @@ return (
                   key={src + idx}
                   className={`carousel__thumb ${idx === heroIndex ? "is-active" : ""}`}
                   onClick={() => setHero(idx)}
-                  aria-label={`Show image ${idx + 1}`}
+                  aria-label={`Show slide ${idx + 1}`}
                   tabIndex={-1} // if you also want to skip thumbs
                 >
                   <img
@@ -133,7 +133,7 @@ return (
             <button
               className="carousel__btn"
               onClick={next}
-              aria-label="Next image"
+              aria-label="Next slide"
               tabIndex={-1}
             >
               ›
@@ -149,15 +149,15 @@ return (
         </div>
         <ul className="info-list">
           <li className="info-list__item">
-            <span className="info-list__icon" aria-hidden>📍</span>
+            <span className="info-list__icon" aria-hidden={true}>📍</span>
             <span>{restaurant.address.line_1}, {restaurant.address.city}, {restaurant.address.postcode}</span>
           </li>
           <li className="info-list__item">
-            <span className="info-list__icon" aria-hidden>📞</span>
+            <span className="info-list__icon" aria-hidden={true}>📍</span>
             <span>{restaurant.contact.phone}</span>
           </li>
           <li className="info-list__item">
-            <span className="info-list__icon" aria-hidden>✉️</span>
+            <span className="info-list__icon" aria-hidden={true}>📍</span>
             <span>{restaurant.contact.email}</span>
           </li>
         </ul>
@@ -226,7 +226,7 @@ return (
               />
             </div>
 
-            {formError && <p className="form-error">{formError}</p>}
+            {formError && <p className="form-error" role="alert">{formError}</p>}
 
             <div className="booking-form__actions">
               <button
