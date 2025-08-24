@@ -6,8 +6,14 @@ module.exports = {
 
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",
+
+    // keep tests/types out
     "!app/**/__tests__/**",
-    "!app/types/**"
+    "!app/types/**",
+
+    // exclude non-executable
+    "!app/main.tsx",        // Vite/React entry point
+    "!app/config.ts",       // env shim
   ],
   coverageThreshold: {
     global: { statements: 80, branches: 80, functions: 80, lines: 80 }

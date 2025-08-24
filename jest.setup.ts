@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import 'whatwg-fetch'; // polyfills fetch, Request, Response, Headers in JSDOM
 import { TextEncoder, TextDecoder } from "node:util";
 
 // Polyfill for react-router / WHATWG encoders in Jest
