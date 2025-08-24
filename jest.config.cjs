@@ -4,9 +4,7 @@ module.exports = {
 
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",
-    "!app/**/?(*.)+(spec|test).{ts,tsx}",
     "!app/**/__tests__/**",
-    "!app/models/**",
     "!app/types/**"
   ],
   coverageThreshold: {

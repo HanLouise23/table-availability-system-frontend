@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import type { Restaurant } from "~/types";
 import RatingStars from "./RatingStars";
 import { bookTable } from "../services/restaurants";
@@ -13,7 +13,7 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant, desiredSeats, onBooked
   // ----- Carousel state -----
   const [heroIndex, setHeroIndex] = useState(0);
 
-
+  const controllerRef = useRef<AbortController | null>(null);
   const images: string[] = useMemo(() => {
     const rest = (restaurant.imageUrls ?? []).filter(Boolean);
     return [restaurant.mainImageUrl, ...rest].filter(Boolean);

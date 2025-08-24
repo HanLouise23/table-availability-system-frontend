@@ -7,7 +7,15 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "verbatimModuleSyntax": false,
-    "types": ["jest", "node", "@testing-library/jest-dom"]
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/jest-dom",
+      "react",
+      "react-dom",
+      "vite/client"
+    ],
+    "lib": ["ES2021", "DOM"]
   },
   "include": [
     "app/**/*.{ts,tsx}",

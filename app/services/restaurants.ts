@@ -1,4 +1,4 @@
-import type { Restaurant } from "../models/Restaurant";
+import type { Restaurant } from "~/types";
 import { apiFetch } from "./api";
 
 export function searchRestaurants(qs: URLSearchParams, signal?: AbortSignal) {
